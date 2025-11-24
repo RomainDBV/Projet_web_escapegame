@@ -23,11 +23,11 @@ Après avoir cloné le repo et installé Docker, éxecuter `docker compose up -d
 
 - user: `admin@admin.com`, pass: `admin`
 - permet de se connecter à postgres si besoin (host `db`, port `5432`, user/pass, sans SSL)
-- http://localhost:5050 (création de BDD avec backup.sql ou bdd.sql)
+- http://localhost:5050 (création de BDD avec (Export SQL de la base ) : backup.sql ou bdd.sqldirectement dans le Query Tool)
 
 ### GeoServer
 
 - user: `admin`, pass: `geoserver`
-- http://localhost:8080/geoserver (création de la heatmap)
+- http://localhost:8080/geoserver (création de la heatmap, copie des workspace Geoserver dans le dossier : geoserver-workspaces)
 
 
