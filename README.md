@@ -2,7 +2,7 @@
 
 Escape game géographique où il faut trouver 5 objets éparpillés dans le monde grâce à des indices, certains seront bloqués par un code ou un objet spécial à sélectionner.
 
-Projet réalisé par Romain De Bloteau-Val'Chuk et Gabriel Pires-Prata dans le cadre du projet de développment web de 2ème année du cycle ingénieur de l'Ecole Nationale des Sciences Géographiques.
+Projet réalisé par Romain de Bloteau-Val'Chuk et Gabriel Pires-Prata dans le cadre du projet de développment web de 2ème année du cycle ingénieur de l'Ecole Nationale des Sciences Géographiques.
 
 
 ## Consignes d'installation
