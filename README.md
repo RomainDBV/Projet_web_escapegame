@@ -12,7 +12,7 @@ Après avoir cloné le repo et installé Docker, éxecuter `docker compose up -d
 
 - basé sur `./apache-php/Dockerfile`
 - fichiers sources dans `./apache-php/src`
-- http://localhost:1234 (site web de l'escape game, vous devez mettre cette adresse URL dans votre navigateur)
+- http://localhost:1234 (pour avoir accès au site web de l'escape game, vous devez mettre cette adresse URL dans votre navigateur)
 
 ### Postgres+PostGIS
 
