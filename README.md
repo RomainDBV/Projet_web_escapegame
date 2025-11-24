@@ -1,4 +1,4 @@
-# Les 4 singes se sont échappés du zoo, ils sont éparpillés dans toute la France, heureusement ils ont laissé des indices pour se faire attraper ! Retrouve-les et ramène-les chez eux. tu auras une récompense juteuse!
+# Les 4 singes se sont échappés du zoo, ils sont éparpillés dans toute la France. Heureusement, ils ont laissé des indices pour se faire attraper ! Retrouve-les et ramène-les chez eux. tu auras une récompense juteuse!
 
 Escape game géographique où il faut trouver 5 objets éparpillés dans le monde grâce à des indices, certains seront bloqués par un code ou un objet spécial à sélectionner.
 
