@@ -1,84 +1,33 @@
-# Docker Starter Kit
+# Les 4 singes se sont échappés du zoo, ils sont éparpillés dans toute la France, heureusement ils ont laissé des indices pour se faire attraper! Retrouve-les et ramène-les chez eux. tu auras une récompense juteuse!
 
-Construit un environnement Docker avec Apache+PHP+Flight, Postgres/PostGIS, pgAdmin, GeoServer.
+Escape game géographique où il faut trouver 5 objets éparpillés dans le monde grâce à des indices, certains seront bloqués par un code ou un objet spécial à sélectionner.
 
-## Structure générale
+Projet réalisé par Romain De Bloteau-Val'Chuk et Gabriel Pires-Prata dans le cadre du projet de développment web de 2ème année du cycle ingénieur de l'Ecole Nationale des Sciences Géographiques.
 
-L’environnement est composé de 4 services (définis dans `docker-compose.yml`) :
 
-| Service                | Nom interne | Rôle                                    | Ports exposés (hôte:docker) | Volume principal                         |
-| ---------------------- | ----------- | --------------------------------------- | --------------------------- | ---------------------------------------- |
-| **Apache+PHP**         | web         | Serveur web pour application Flight PHP | `1234:80`                   | `./apache-php/src:/var/www/html`         |
-| **PostgreSQL+PostGIS** | db          | Base de données spatiale                | `5432`                      | `pg_data:/var/lib/postgresql/data`       |
-| **pgAdmin**            | pgadmin     | Interface web pour gérer Postgres       | `5050:80`                   | `pgadmin_data:/var/lib/pgadmin`          |
-| **GeoServer**          | geoserver   | Serveur cartographique (WMS, WFS, WCS)  | `8080:8080`                 | `geoserver_data:/opt/geoserver/data_dir` |
-
-## Détails des services
+## Consignes d'installation
+Après avoir cloné le repo et installé Docker, éxecuter `docker compose up -d` à la racine du projet.
 
 ### Apache+PHP+Flight
 
 - basé sur `./apache-php/Dockerfile`
 - fichiers sources dans `./apache-php/src`
-- http://localhost:1234
+- http://localhost:1234 (site web de l'escape game, vous devez mettre cette adresse URL dans votre navigateur)
 
 ### Postgres+PostGIS
 
 - user: `postgres`, pass: `postgres`, base: `mydb`, port: `5432`
-- exécute `./db/init.sql` au premier démarrage (contruit une table points, avec 3 points)
+- exécute `./db/backup.sql` (au cas ou, le code de création de table est aussi disponible sous le nom de bdd.sql, fichier texte)
 
 ### pgadmin
 
 - user: `admin@admin.com`, pass: `admin`
 - permet de se connecter à postgres si besoin (host `db`, port `5432`, user/pass, sans SSL)
-- http://localhost:5050
+- http://localhost:5050 (création de BDD avec backup.sql ou bdd.sql)
 
 ### GeoServer
 
 - user: `admin`, pass: `geoserver`
-- http://localhost:8080/geoserver
+- http://localhost:8080/geoserver (création de la heatmap)
 
-## Volumes & persistance
 
-Les volumes Docker permettent de conserver les données même si le conteneur est supprimé et/ou relancé :
-
-- un volume pour Apache+PHP (monté sur le dossier `./apache-php/src`)
-- trois autres volumes Docker pour les données (attention, les données de ces volumes ne sont pas accessibles en local, voir «Sauvegarde» plus loin)
-
-```yml
-volumes:
-  pg_data:
-  pgadmin_data:
-  geoserver_data:
-```
-
-- `pg_data` stocke la base PostGIS (schémas, données, utilisateurs)
-- `pgadmin_data` stocke les données pgadmin (connexions)
-- `geoserver_data` stocke la configuration GeoServer (workspaces)
-
-## Commandes de base
-
-```sh
-# lance la stack Docker
-docker compose up
-docker compose up -d # en mode daemon
-
-# arrête la stack
-docker compose down
-docker compose down -v # supprime en plus les volumes
-```
-
-## Sauvegarde
-
-Pour récupérer en local les données de la BDD et de GeoServer, exécutez les scripts respectifs depuis la racine du projet
-
-```sh
-# Copie des workspaces GeoServer
-# docker compose cp <container>:<from> <to>
-docker compose cp geoserver:/opt/geoserver/data_dir/workspaces/. ./geoserver-workspaces/
-
-# Export SQL de la base (dump)
-docker compose exec -t db pg_dump --inserts -U postgres -d mydb > "./db/backup.sql"
-```
-
-- un dossier `./geoserver-workspaces` est créé pour les données des workspaces GeoServer
-- un fichier `./db/backup.sql` est créé pour un dump de la BDD

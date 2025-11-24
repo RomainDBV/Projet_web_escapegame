@@ -1,0 +1,158 @@
+-- Activer PostGIS 
+
+CREATE EXTENSION IF NOT EXISTS postgis; 
+
+-- Suppression des anciennes tables si elles existent 
+
+DROP TABLE IF EXISTS joueurs CASCADE;
+DROP TABLE IF EXISTS objets CASCADE; 
+DROP TABLE IF EXISTS scores CASCADE; 
+
+
+
+
+-- TABLE JOUEUR
+
+CREATE TABLE joueurs (
+    id_joueur SERIAL PRIMARY KEY,
+    pseudo VARCHAR(50) NOT NULL UNIQUE,
+    date_creation TIMESTAMP DEFAULT now()
+);
+
+-- TABLE OBJET
+
+CREATE TABLE objets (
+    id_objet SERIAL PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    description TEXT,
+    type_objet VARCHAR(30) CHECK (type_objet IN ('recuperable', 'code', 'bloque_objet', 'bloque_code','final_objet')),
+    code_deverrouille VARCHAR(20),
+    id_objet_precedent INTEGER REFERENCES objets(id_objet),
+    indice_precedent TEXT,
+    indice_propre TEXT,
+    indice_suivant TEXT,
+    trouve BOOLEAN DEFAULT false,
+    visible BOOLEAN DEFAULT true,
+    niveau_zoom_min INTEGER,
+    icone VARCHAR(200),
+    geom geometry(Point, 4326)
+);
+
+-- TABLE SCORE
+
+CREATE TABLE scores (
+    id_score SERIAL PRIMARY KEY,
+    id_joueur INTEGER REFERENCES joueurs(id_joueur) ON DELETE CASCADE,
+    temps_total INTEGER,
+    objets_trouves INTEGER,
+    score_total INTEGER,
+    date_partie TIMESTAMP DEFAULT now()
+);
+
+
+
+
+-- ============================
+-- OBJET 1
+-- ============================
+INSERT INTO objets (
+    id_objet, nom, description, type_objet, id_objet_precedent, indice_precedent, indice_propre, indice_suivant, niveau_zoom_min, icone, geom) 
+VALUES (
+    1,
+    'Singe vietnamien',
+    'Tu as trouvé le singe vietnamien à Senlis ! Mouerf',
+    'recuperable',
+	NULL,
+    'Tu es à la recherche des 4 singes de France afin de les ramener à leur zoo et débloquer LA banane 🍌!',
+    'Indice conduisant au singe vietnamien (Objet 1) : ville dans laquelle se trouvait la résidence principale d’Hugues Capet',
+    'Indice conduisant au singe normand (Objet 2) : ville des pruneaux de la Garonne',
+    13,
+    'img/singe_vietnamien.png',
+    ST_SetSRID(ST_MakePoint(2.5845, 49.2066), 4326)
+);
+
+-- ============================
+-- OBJET 2
+-- ============================
+INSERT INTO objets (
+	id_objet, nom, description, type_objet, code_deverrouille, id_objet_precedent, indice_precedent, indice_propre, indice_suivant, niveau_zoom_min, icone, geom) 
+VALUES (
+    2,
+    'Singe normand',
+    'Tu as trouvé le singe normand et son code à Agen ! ',
+    'code',
+	'76470',
+	1,
+    'Indice conduisant au singe vietnamien (Objet 1) : ville dans laquelle se trouvait la résidence principale d’Hugues Capet',
+    'Indice conduisant au singe normand (Objet 2) : ville des pruneaux de la Garonne',
+    'Indice conduisant au singe portugais (Objet 3) : ville entre deux lacs en altitude (74)',
+    15,
+    'img/singe_normand.png',
+    ST_SetSRID(ST_MakePoint(0.6174, 44.2028), 4326)
+);
+
+-- ============================
+-- OBJET 3
+-- ============================
+INSERT INTO objets (
+	id_objet, nom, description, type_objet, id_objet_precedent, indice_precedent, indice_propre, indice_suivant, niveau_zoom_min, icone, geom) 
+VALUES (
+    3,
+    'Singe portugais',
+    'Tu as trouvé le singe portugais à Rumilly !',
+    'bloque_code',
+	2,
+    'Pas trop vite ! Tu as oublié le code du singe normand. Indice conduisant au singe normand et au code (Objet 2) : ville des pruneaux de la Garonne',
+    'Indice conduisant au singe portugais (Objet 3) : ville entre deux lacs en altitude (74)',
+    'Indice conduisant au singe ukrainien (Objet 4) : ville située du côté ouest de Versailles',
+    15,
+    'img/singe.jpg',
+    ST_SetSRID(ST_MakePoint(5.943, 45.8672), 4326)
+);
+
+-- ============================
+-- OBJET 4
+-- ============================
+INSERT INTO objets (
+    id_objet, nom, description, type_objet, id_objet_precedent, indice_precedent, indice_propre, indice_suivant, niveau_zoom_min, icone, geom) 
+VALUES (
+    4,
+    'Singe ukrainien',
+    'Tu as trouvé le singe ukrainien à Fontenay-le Fleury ! ',
+    'bloque_objet',
+	3,
+    'Pas trop vite ! Tu as oublié le singe portugais. Indice conduisant au singe portugais (Objet 3) : ville entre deux lacs en altitude (74)',
+    'Indice conduisant au singe ukrainien (Objet 4) : ville située du côté ouest de Versailles',
+    'Indice conduisant à LA banane (Objet 5) : Zoo situé dans une ville du nord de la France, célèbre pour sa cathédrale sur la Somme',
+    15,
+    'img/singe.jpg',
+    ST_SetSRID(ST_MakePoint(2.046, 48.8112), 4326)
+);
+
+-- ============================
+-- OBJET 5
+-- ============================
+INSERT INTO objets (
+	id_objet, nom, description, type_objet, id_objet_precedent, indice_precedent, indice_propre, indice_suivant, niveau_zoom_min, icone, geom) 
+VALUES (
+    5,
+    'LA banane',
+    'Objet 5 au Zoo d’Amiens. Vérifie possession de tous les objets précédents.',
+    'final_objet',
+    4,
+    'Il te faut les 4 singes pour débloquer cet objet !
+     Indice conduisant au singe vietnamien (Objet 1) : Senlis
+     Indice conduisant au singe normand (Objet 2) : Agen
+     Indice conduisant au singe portugais (Objet 3) : Rumilly
+     Indice conduisant au singe ukrainien (Objet 4) : Fontenay-le-Fleury',
+    'Indice conduisant à LA banane (Objet 5) : Zoo situé dans une ville du nord de la France, célèbre pour sa cathédrale sur la Somme',
+    'pas indice suivant',
+    16,
+    'img/singe.jpg',
+    ST_SetSRID(ST_MakePoint(2.277, 49.9004), 4326)
+);
+
+-- Vérification rapide 
+SELECT id_objet, nom, type_objet, id_objet_precedent, ST_AsText(geom) AS coordonnees FROM objets;
+
+
