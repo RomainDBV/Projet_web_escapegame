@@ -106,7 +106,7 @@ VALUES (
     'Indice conduisant au singe portugais (Objet 3) : ville entre deux lacs en altitude (74)',
     'Indice conduisant au singe ukrainien (Objet 4) : ville située du côté ouest de Versailles',
     15,
-    'img/singe.jpg',
+    'img/singe_portugais.png',
     ST_SetSRID(ST_MakePoint(5.943, 45.8672), 4326)
 );
 
@@ -125,7 +125,7 @@ VALUES (
     'Indice conduisant au singe ukrainien (Objet 4) : ville située du côté ouest de Versailles',
     'Indice conduisant à LA banane (Objet 5) : Zoo situé dans une ville du nord de la France, célèbre pour sa cathédrale sur la Somme',
     15,
-    'img/singe.jpg',
+    'img/singe_ukrainien.png',
     ST_SetSRID(ST_MakePoint(2.046, 48.8112), 4326)
 );
 
@@ -148,7 +148,7 @@ VALUES (
     'Indice conduisant à LA banane (Objet 5) : Zoo situé dans une ville du nord de la France, célèbre pour sa cathédrale sur la Somme',
     'pas indice suivant',
     16,
-    'img/singe.jpg',
+    'img/banane.png',
     ST_SetSRID(ST_MakePoint(2.277, 49.9004), 4326)
 );
 
