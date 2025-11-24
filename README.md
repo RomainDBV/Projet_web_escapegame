@@ -30,7 +30,7 @@ Après avoir cloné le repo et installé Docker, éxecuter `docker compose up -d
 - user: `admin`, pass: `geoserver`
 - http://localhost:8080/geoserver (création de la heatmap, copie des workspace Geoserver dans le dossier : geoserver-workspaces)
 
-##
+## Bug éventuel
 
 petit bug : l'image du singe_normand disparait lors du drag and drop
 
